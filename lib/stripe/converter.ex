@@ -11,7 +11,7 @@ defmodule Stripe.Converter do
   def convert_result(result), do: convert_value(result)
 
   @supported_objects ~w(account bank_account card customer event external_account 
-    file_upload invoice list plan subscription token)
+    file_upload invoice list plan subscription token balance)
 
   @spec convert_value(any) :: any
   defp convert_value(%{"object" => object_name} = value) when is_binary(object_name) do
