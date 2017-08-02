@@ -1,0 +1,28 @@
+{
+  "object": "balance",
+  "available": [
+    {
+      "currency": "eur",
+      "amount": 0,
+      "source_types": {
+        "card": 0
+      }
+    }
+  ],
+  "connect_reserved": [
+    {
+      "currency": "eur",
+      "amount": 0
+    }
+  ],
+  "livemode": false,
+  "pending": [
+    {
+      "currency": "eur",
+      "amount": 0,
+      "source_types": {
+        "card": 0
+      }
+    }
+  ]
+}

@@ -5,7 +5,6 @@ defmodule Stripe.Balance do
   You can:
   - Retrieve a balance
 
-
   Stripe API reference: https://stripe.com/docs/api#balance
   """
 
@@ -20,13 +19,13 @@ defmodule Stripe.Balance do
   @singular_endpoint "balance"
 
   @balance_map %{
-    currency: [:retrieve], 
+    currency: [:retrieve],
     amount: [:retrieve],
     source_types: [:retrieve],
   }
 
   @connect_reserved_map %{
-    currency: [:retrieve], 
+    currency: [:retrieve],
     amount: [:retrieve]
   }
 
@@ -36,26 +35,30 @@ defmodule Stripe.Balance do
     pending: @balance_map
   }
 
-  @nullable_keys [
-    :connect_reserved
-  ]
+  @doc """
+  Retrieve your own balance without options.
+  """
+  @spec retrieve :: {:ok, t} | {:error, Stripe.api_error_struct}
+  def retrieve, do: retrieve([])
 
   @doc """
-  Retrieve a balance.
+  Retrieve your own balance with options.
   """
-  @spec retrieve(Keyword.t) :: {:ok, t} | {:error, Stripe.api_error_struct}
-  def retrieve(opts \\ []) do
-    endpoint = @singular_endpoint
-    Stripe.Request.retrieve(endpoint, opts)
-  end
+  @spec retrieve(list) :: {:ok, t} | {:error, Stripe.api_error_struct}
+  def retrieve(opts) when is_list(opts), do: do_retrieve(@singular_endpoint, opts)
 
   @doc """
-  Retrieve a balance for an account id.
+  Retrieve a balance for an account with a specified `id`.
   """
-  @spec retrieve(binary, Keyword.t) :: {:ok, t} | {:error, Stripe.api_error_struct}
-  def retrieve(id, opts \\ []) when is_binary(id) do
-    Keyword.put_new([opts, :connect_account, id)
-    endpoint = @singular_endpoint
+  @spec retrieve(binary, list) :: {:ok, t} | {:error, Stripe.api_error_struct}
+  def retrieve(id, opts \\ []), do: do_retrieve(@singular_endpoint, id, opts)
+
+  @spec do_retrieve(String.t, list) :: {:ok, t} | {:error, Stripe.api_error_struct}
+  defp do_retrieve(endpoint, opts), do: Stripe.Request.retrieve(endpoint, opts)
+
+  @spec do_retrieve(String.t, binary, Keyword.t) :: {:ok, t} | {:error, Stripe.api_error_struct}
+  defp do_retrieve(endpoint, id, opts) when is_binary(id) do
+    Keyword.put_new(opts, :connect_account, id)
     Stripe.Request.retrieve(endpoint, opts)
   end
 end

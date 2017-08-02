@@ -169,4 +169,33 @@ defmodule Stripe.ConverterTest do
 
     assert result == expected_result
   end
+
+  test "converts a balance response" do
+    expected_result = %Stripe.Balance{
+      available: [
+        %{amount: 0, 
+          currency: "eur",
+          source_types: 
+          %{card: 0}
+          }
+        ],
+      connect_reserved: [
+        %{amount: 0, 
+          currency: "eur"}
+        ], 
+      id: nil, 
+      object: "balance",
+      pending: [
+          %{amount: 0, 
+          currency: "eur", 
+          source_types: %{card: 0}
+          }
+        ]
+      }
+
+    fixture = Helper.load_fixture("balance.json")
+    result = Converter.convert_result(fixture)
+
+    assert result == expected_result
+  end
 end
